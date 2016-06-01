@@ -1,0 +1,31 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+
+    {{ post.created_at }}
+    {{ post.updated_at }}
+    <hr/>
+
+    <img src="{{ post.photo.url }}" />
+
+    {{ post.content|linebreaks }}
+
+    <h3>댓글</h3>
+    <a href="{% url "blog:comment_new" post.pk %}" class="btn btn-primary btn-block">댓글 쓰기</a>
+    <ul>
+    {% for comment in post.comment_set.all %}
+    <li>
+        {{ comment.message }}
+        by {{ comment.user }}
+        {{ comment.created_at }}
+        <a href="{% url "blog:comment_edit" post.pk comment.pk %}">
+            수정
+        </a>
+    </li>
+    {% endfor %}
+    </ul>
+
+    <hr/>
+    <a href="{% url "blog:index" %}" class="btn btn-default">글 목록</a>
+{% endblock %}
